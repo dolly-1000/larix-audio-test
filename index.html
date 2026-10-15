@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Larix音声テスト</title>
+  <style>
+    body {
+      margin: 0;
+      background: transparent;
+      font-family: sans-serif;
+      text-align: center;
+    }
+    button {
+      font-size: 28px;
+      padding: 24px;
+      margin: 20px;
+    }
+  </style>
+</head>
+<body>
+  <button onclick="beep()">ピッ！ 音声テスト</button>
+  <script>
+    function beep() {
+      const AudioContext =
+        window.AudioContext || window.webkitAudioContext;
+      const ctx = new AudioContext();
+      const oscillator = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      oscillator.type = "sine";
+      oscillator.frequency.value = 880;
+      gain.gain.value = 0.2;
+
+      oscillator.connect(gain);
+      gain.connect(ctx.destination);
+
+      oscillator.start();
+      oscillator.stop(ctx.currentTime + 0.3);
+      oscillator.onended = () => ctx.close();
+    }
+  </script>
+</body>
+</html>
