@@ -3,42 +3,39 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1">
 <title>Larix音声テスト</title>
 <style>
   body {
     margin: 0;
     background: transparent;
-    color: white;
     font-family: sans-serif;
   }
 </style>
 </head>
 <body>
+
+<audio id="sound" preload="auto">
+  <source
+    src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"
+    type="audio/ogg">
+</audio>
+
 <script>
-  const AudioCtx = window.AudioContext || window.webkitAudioContext;
-  const ctx = new AudioCtx();
+  const sound = document.getElementById("sound");
 
   function beep() {
-    if (ctx.state === "suspended") {
-      ctx.resume();
-    }
-
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-
-    osc.frequency.value = 880;
-    gain.gain.value = 0.2;
-
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-
-    osc.start();
-    osc.stop(ctx.currentTime + 0.3);
+    sound.pause();
+    sound.currentTime = 0;
+    sound.play().catch(err => {
+      console.log("再生失敗:", err);
+    });
   }
 
   setInterval(beep, 5000);
   beep();
 </script>
+
 </body>
 </html>
